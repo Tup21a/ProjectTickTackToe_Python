@@ -1,31 +1,73 @@
-row1 = [" "," ", " "]
-row2 = [" "," ", " "]
-row3 = [" "," ", " "]
-game = [row1,row2,row3]
+import random
+import os, time
+
+game = [[" "," "," "], [" "," "," "], [" "," "," "]]
+
 
 def draw(game):
-    for row in game:
-        print(row)
-        
-def get_input(game):
-    while True:
-        row, col = map(int, input("Ingrese fila y columna (0 1): ").split())
-        if row and col <= 2:
-            if game[row][col] == " ":
-                return row, col
-            print("La posicion:", row, col,"ya esta ocupada !!")
-        else:
-            print("Ingrese una posicion valida (entre 0 - 2 para filas y col)")
+	for x in game:
+		print(x)
 
 def update_board(game, row, col, symbol):
-    game[row][col] = symbol
-    
-def start(game):
-    draw(game)
-    while True:
-        row, col = get_input(game)
-        update_board(game, row , col , "X")
-        draw(game)
- 
+	game[row][col] = symbol
 
-start(game)
+def get_input():
+	row, col = map(int, input("ingrese x, y: ").split())
+	return row, col
+
+def winer(game, symbol):
+	for i in range(3):
+		# verifica las filas - horizontal
+		if game[i][0] == symbol and game[i][1] == symbol and game[i][2] == symbol:
+			return True
+		# verifica columnas - vertical
+		if game[0][i] == symbol and game[1][i] == symbol and game[2][i] == symbol:
+			return True
+	# verifica diagonales
+	if (game[0][0] == symbol and game[1][1] == symbol and game[2][2] == symbol) or (game[0][2] == symbol and game[1][1] == symbol and game[0][0] == symbol):
+		return True
+	return False
+	
+def start(game):
+    sw = 1
+    draw(game)
+    for i in range(9):
+        if i % 2 == 0:
+            while True:
+                row, col = get_input()
+                if row > 2 or col > 2:
+                    print("Ingrese una posicion valida existente entre 0 - 2")
+                else:
+                    if game[row][col] == " ":
+                        update_board(game, row, col, "x")
+                        break
+                    print(f"La posicion {row} {col} ya existe, ingrese otra posicion !!")
+            if winer(game, "x"):
+                print('\t Ganaste "x" !!!')
+                sw = 0
+        else:
+            while True:
+                row, col = random.randint(0,2), random.randint(0,2)
+                if game[row][col] == " ":
+                    update_board(game, row, col, "o")
+                    print("La Computadora juega: ", row, col)
+                    break
+            if winer(game, "o"):
+                print('\t Perdiste !, ganó "o"')
+                sw = 0
+        draw(game)
+        if sw == 0:
+            break
+    if sw == 1:
+        print("EMPATE !!")
+
+    			
+  
+  
+while True:
+	print("\t Nuevo Juego")
+	start(game)
+	if input("Desea iniciar nuevo juego? (s/n)") == "s":
+		os.system("cls") #clear
+	else:
+		break
