@@ -9,9 +9,15 @@ def draw(game):
 def update_board(game, row, col, symbol):
 	game[row][col] = symbol
 
+
+def parse_to_ints(user_input):
+    return map(int, user_input.split())
+
+
 def get_input():
-	row, col = map(int, input("ingrese x, y: ").split())
-	return row, col
+    user_input = input("ingrese x, y: ")
+    return parse_to_ints(user_input)
+
 
 def winer(game, symbol):
 	for i in range(3):
@@ -22,11 +28,11 @@ def winer(game, symbol):
 		if game[0][i] == symbol and game[1][i] == symbol and game[2][i] == symbol:
 			return True
 	# verifica diagonales
-	if (game[0][0] == symbol and game[1][1] == symbol and game[2][2] == symbol) or (game[0][2] == symbol and game[1][1] == symbol and game[2][0] == symbol): #tuve error 
+	if (game[0][0] == symbol and game[1][1] == symbol and game[2][2] == symbol) or (game[0][2] == symbol and game[1][1] == symbol and game[2][0] == symbol): #tuve error
 		return True
 	return False
 
-	
+
 def start():
     game = [[" "," "," "], [" "," "," "], [" "," "," "]]
     #game = [[" " for _ in range(3)] for _ in range(3)]
@@ -70,12 +76,13 @@ def start():
     if sw == 1:
         print("EMPATE !!")
 
-    			
-  
-while True:
-	print("\t Nuevo Juego")
-	start()
-	if input("Desea iniciar nuevo juego? (s/n)") == "s":
-		os.system("cls") #clear
-	else:
-		break
+
+
+if __name__ == "__main__":
+    while True:
+        print("\t Nuevo Juego")
+        start()
+        if input("Desea iniciar nuevo juego? (s/n)") == "s":
+            os.system("cls") #clear
+        else:
+            break
